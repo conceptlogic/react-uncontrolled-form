@@ -1,0 +1,10 @@
+{
+  "name": "react-uncontrolled-form",
+  "version": "0.0.1",
+  "description": "React form state management with uncontrolled inputs",
+  "main": "index.js",
+  "repository": "https://github.com/conceptlogic/react-uncontrolled-form",
+  "author": "doug@metarouter.io",
+  "license": "MIT",
+  "private": false
+}
