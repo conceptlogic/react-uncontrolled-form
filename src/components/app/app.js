@@ -36,9 +36,7 @@ const App = () => {
         errorMsg={formState.password?.errorMsg}
       />
 
-      <button type="submit" onMouseDown={onFormSubmit}>
-        Log In
-      </button>
+      <button type="submit">Log In</button>
     </Form>
   )
 }

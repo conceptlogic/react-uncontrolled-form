@@ -15,7 +15,7 @@ const getJson = fields => {
 
 /**
  *
- * Get validation errors from form state
+ * Get validation errors
  */
 const getErrors = (fields, getValidators) => {
   return fields.map(field => {

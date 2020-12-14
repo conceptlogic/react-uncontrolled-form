@@ -45,14 +45,16 @@ const InputText = ({
     <div>
       {label && <label htmlFor={id}>{label}</label>}
 
-      {controlled && <input value={value} onChange={onChange} {...attrs} />}
+      <div>
+        {controlled && <input value={value} onChange={onChange} {...attrs} />}
 
-      {/* key forces input to re-render when defaultValue has changed */}
-      {!controlled && <input defaultValue={defaultValue} {...attrs} key={defaultValue} />}
+        {/* key forces input to re-render when defaultValue has changed */}
+        {!controlled && <input defaultValue={defaultValue} {...attrs} key={defaultValue} />}
 
-      {value && clear && <span onClick={clear}>x</span>}
+        {value && clear && <span onClick={clear}>x</span>}
 
-      {errorMsg && <p className="errorMsg">{errorMsg}</p>}
+        {errorMsg && <p className="errorMsg">{errorMsg}</p>}
+      </div>
     </div>
   )
 }
