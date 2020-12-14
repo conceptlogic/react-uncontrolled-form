@@ -1,0 +1,30 @@
+body {
+  padding: 1rem;
+}
+
+p.errorMsg {
+  color: red;
+  margin-top: 0.3rem;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.2rem;
+}
+
+input {
+  outline: 0;
+  border: solid 1px gray;
+}
+input.errorMsg {
+  border: solid 1px red;
+}
+
+form {
+  border: dashed 1px #009688;
+  padding: 1rem;
+}
+
+form > div {
+  margin-bottom: 2rem;
+}
