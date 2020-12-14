@@ -2640,6 +2640,11 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.1.0.tgz#a5d06b4a8b01e3a63771daa5cb7a1903e2e57067"
   integrity sha512-tW+UkmtNg/jv9CSofAKvgVcO7c2URjhTdW1ZTkcAritblu8tajiYy7YisnIflEwtKssCtOxpnBRoCB7iap0/TA==
 
+floating-point-regex@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/floating-point-regex/-/floating-point-regex-0.1.0.tgz#887d6fec959e4d32e9219ffbf4eab4149999fe91"
+  integrity sha1-iH1v7JWeTTLpIZ/79Oq0FJmZ/pE=
+
 for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
