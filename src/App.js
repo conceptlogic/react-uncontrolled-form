@@ -1,5 +1,12 @@
 import React from 'react'
 
-const App = () => <h1>Hey</h1>
+import InputText from './input-text'
+
+const App = () => (
+  <h1>
+    Hey
+    <InputText name="name" />
+  </h1>
+)
 
 export default App
