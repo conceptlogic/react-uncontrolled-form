@@ -7,37 +7,79 @@ import Form from './../../components/form/form'
 import { validateRequired, validateEmail, validateMinLength } from './../../components/form/validators'
 
 const App = () => {
-  const formId = generateId()
-  const { formState, resetError, submitForm, setFormState } = useForm(formId)
+  const loginId = generateId()
+  const secondId = generateId()
 
-  const onFormSubmit = () => {
-    const { data, isValid } = submitForm()
+  const { formState: firstState, submitForm: submitFirst, setFormState: setFirst, resetError: resetFirst } = useForm(
+    loginId
+  )
+  const {
+    formState: secondState,
+    submitForm: submitSecond,
+    setFormState: setSecond,
+    resetError: resetSecond,
+  } = useForm(secondId)
+
+  const onSubmitFirst = () => {
+    const { data, isValid } = submitFirst()
     if (isValid) {
       console.log(`form data`, data)
     }
   }
 
-  console.log(`formState`, formState)
+  const onSubmitSecond = () => {
+    const { data, isValid } = submitSecond()
+    if (isValid) {
+      console.log(`form data`, data)
+    }
+  }
+
+  console.log(`formState`, firstState)
 
   return (
-    <Form onSubmit={onFormSubmit} onInput={resetError} onBlur={setFormState} id={formId}>
-      <InputText
-        label="email"
-        name="email"
-        validators={[validateRequired(), validateEmail()]}
-        errorMsg={formState.email?.errorMsg}
-      />
+    <>
+      <Form onSubmit={onSubmitFirst} onInput={resetFirst} onBlur={setFirst} id={loginId}>
+        <h3>Login</h3>
 
-      <InputText
-        label="password"
-        name="password"
-        type="password"
-        validators={[validateRequired(), validateMinLength(8)]}
-        errorMsg={formState.password?.errorMsg}
-      />
+        <InputText
+          label="email"
+          name="email"
+          validators={[validateRequired(), validateEmail()]}
+          errorMsg={firstState.email?.errorMsg}
+        />
 
-      <button type="submit">Log In</button>
-    </Form>
+        <InputText
+          label="password"
+          name="password"
+          type="password"
+          validators={[validateRequired(), validateMinLength(8)]}
+          errorMsg={firstState.password?.errorMsg}
+        />
+
+        <button type="submit">Log In</button>
+      </Form>
+
+      <Form onSubmit={onSubmitSecond} onInput={resetSecond} onBlur={setSecond} id={secondId}>
+        <h3>Login</h3>
+
+        <InputText
+          label="email"
+          name="email"
+          validators={[validateRequired(), validateEmail()]}
+          errorMsg={secondState.email?.errorMsg}
+        />
+
+        <InputText
+          label="new password"
+          name="password"
+          type="password"
+          validators={[validateRequired(), validateMinLength(8)]}
+          errorMsg={secondState.password?.errorMsg}
+        />
+
+        <button type="submit">Log In</button>
+      </Form>
+    </>
   )
 }
 

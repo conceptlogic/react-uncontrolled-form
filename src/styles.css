@@ -13,8 +13,8 @@ label {
 }
 
 input {
-  outline: 0;
   border: solid 1px gray;
+  outline: 0;
 }
 input.errorMsg {
   border: solid 1px red;
@@ -23,6 +23,7 @@ input.errorMsg {
 form {
   border: dashed 1px #009688;
   padding: 1rem;
+  margin-bottom: 2rem;
 }
 
 form > div {
