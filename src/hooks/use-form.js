@@ -15,19 +15,6 @@ const getJson = fields => {
 
 /**
  *
- * Get validation errors
- */
-const getErrors = (fields, getValidators) => {
-  return fields.map(field => {
-    return {
-      name: field.name,
-      errorMsg: validate(field.value, getValidators(field.id)),
-    }
-  })
-}
-
-/**
- *
  * Get form state from DOM, excluding any disabled fields and those without a name attr
  *
  * @param {string} formId
@@ -35,25 +22,9 @@ const getErrors = (fields, getValidators) => {
 const getFields = formId => {
   const elements = [...document.getElementById(formId).elements]
 
-  return elements
-    .filter(({ disabled, name }) => {
-      return !disabled && name
-    })
-    .map(el => {
-      let { name, value, id, type } = el
-
-      // ignore select placeholder
-      if (type === 'select' && value === 'placeholder ') {
-        value = ''
-      }
-
-      return {
-        name,
-        id,
-        value: getValue(el),
-        errorMsg: null,
-      }
-    })
+  return elements.filter(({ disabled, name }) => {
+    return !disabled && name
+  })
 }
 
 const actions = {
@@ -99,23 +70,10 @@ const handleDisplayErrors = ({ payload, draft }) => {
   })
 }
 
-const handleRemoveFields = ({ payload, draft }) => {
-  const { fieldNames } = payload
-
-  fieldNames.forEach(name => {
-    delete draft[name]
-  })
-}
-
 const handleResetError = ({ payload, draft }) => {
   if (draft[payload.fieldName]) {
     draft[payload.fieldName].errorMsg = null
   }
-}
-
-// determine which element attr to use as the input's value
-const getValue = el => {
-  return el.type === 'checkbox' ? el.checked : el.value
 }
 
 const useForm = formId => {
@@ -131,9 +89,6 @@ const useForm = formId => {
       case actions.DISPLAY_ERRORS:
         handleDisplayErrors({ payload, draft })
         break
-      case actions.REMOVE_FIELDS:
-        handleRemoveFields({ payload, draft })
-        break
       case actions.RESET_ERROR:
         handleResetError({ payload, draft })
         break
@@ -143,8 +98,8 @@ const useForm = formId => {
   const [formState, dispatch] = useReducer(reducer, {}) // start with empty initial state
 
   const setFormState = event => {
-    const { name, id } = event?.target
-    const errorMsg = validate(getValue(event?.target), getValidators(id))
+    const { name, id, value } = event?.target
+    const errorMsg = validate(value, getValidators(id))
 
     const fields = getFields(formId).map(field => {
       // add error message for the current field
@@ -174,7 +129,7 @@ const useForm = formId => {
    * @param {{ name, value, errorMsg, disabled }[]} otherFields Array of additional fields to update
    */
   const setFieldState = (event, { otherFields = [] } = {}) => {
-    const { name } = event?.target
+    const { name, value } = event?.target
 
     dispatch({
       type: actions.UPDATE_FIELDS,
@@ -182,36 +137,12 @@ const useForm = formId => {
         fields: [
           {
             name,
-            value: getValue(event?.target),
+            value,
           },
           ...otherFields,
         ],
       },
     })
-  }
-
-  const validateField = event => {
-    const { name, id } = event?.target
-    const value = getValue(event?.target)
-    const errorMsg = validate(value, getValidators(id))
-
-    dispatch({
-      type: actions.UPDATE_FIELDS,
-      payload: {
-        fields: [
-          {
-            name,
-            errorMsg,
-            value,
-          },
-        ],
-      },
-    })
-
-    // return value is used by the expression editor
-    if (errorMsg) {
-      return errorMsg
-    }
   }
 
   const resetError = event => {
@@ -236,7 +167,7 @@ const useForm = formId => {
     // ensures that any fields rendered since the last form state update get their values added now for validation/submission
     const fields = getFields(formId)
 
-    const validatedFields = getErrors(fields, getValidators)
+    const validatedFields = validateFields(fields, getValidators)
     if (_every(validatedFields, field => _isNil(field.errorMsg))) {
       return { isValid: true, data: getJson(fields) }
     } else {
@@ -249,6 +180,41 @@ const useForm = formId => {
 
       return { isValid: false }
     }
+  }
+
+  /**
+   *
+   * Get validation errors for all fields
+   */
+  const validateFields = (fields, getValidators) => {
+    return fields.map(field => {
+      return {
+        name: field.name,
+        errorMsg: validate(field.value, getValidators(field.id)),
+      }
+    })
+  }
+
+  /**
+   *
+   * Get validation errors for a single field
+   */
+  const validateField = event => {
+    const { name, value, type, id, checked } = event?.target || event?.currentTarget
+    const errorMsg = validate(value, getValidators(id))
+
+    dispatch({
+      type: actions.UPDATE_FIELDS,
+      payload: {
+        fields: [
+          {
+            name,
+            errorMsg,
+            value: type === 'checkbox' ? checked : value,
+          },
+        ],
+      },
+    })
   }
 
   // set initial state

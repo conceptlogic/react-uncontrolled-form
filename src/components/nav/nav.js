@@ -15,7 +15,7 @@ const Nav = () => {
           <Link to="/paired-validation">Paired Validation</Link>
         </li>
         <li>
-          <Link to="/dependent-fields">Dependent Fields</Link>
+          <Link to="/mixed-fields">Controlled & Uncontrolled</Link>
         </li>
       </ul>
     </nav>
