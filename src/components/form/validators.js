@@ -10,6 +10,31 @@ import {
 } from 'lodash'
 import floatingPointRegex from 'floating-point-regex'
 
+const isUrl = string => {
+  try {
+    new URL(string)
+  } catch (e) {
+    return false
+  }
+
+  return true
+}
+
+/**
+ *
+ * Given a value and an array of validators, returns the error message from the first failing
+ * validation, or null if all validations pass
+ *
+ * @param {string} value
+ * @param {Function[]} validators Array of validator functions
+ * @returns {string} Error message or null
+ */
+const validateField = (value, validators = []) => {
+  const errors = validators.map(validator => validator(value)).filter(result => !_isNil(result))
+
+  return errors.length ? errors[0] : null
+}
+
 /**
  *
  * Base signature for inner function returned by validators
@@ -150,22 +175,7 @@ const validateMinLength = length => {
 
 /**
  *
- * Given a value and an array of validators, returns the error message from the first failing
- * validation, or null if all validations pass
- *
- * @param {string} value
- * @param {Function[]} validators Array of validator functions
- * @returns {string} Error message or null
- */
-const validateField = (value, validators = []) => {
-  const errors = validators.map(validator => validator(value)).filter(result => !_isNil(result))
-
-  return errors.length ? errors[0] : null
-}
-
-/**
- *
- * Passes if the value is in the range
+ * Passes if the value is in the provided range
  *
  * @param {string} msg
  * @returns {Function}
@@ -173,6 +183,12 @@ const validateField = (value, validators = []) => {
 const validateInRange = (min, max, msg = `Value must be between ${min} and ${max}`) => {
   return value => {
     return _gte(Number(value), min) && _lte(Number(value), max) ? null : msg
+  }
+}
+
+const validateUrl = (msg = `Value must be a URL`) => {
+  return value => {
+    return !isUrl(value) ? msg : null
   }
 }
 
@@ -188,4 +204,5 @@ export {
   validateEmail,
   validateMinLength,
   validateInRange,
+  validateUrl,
 }

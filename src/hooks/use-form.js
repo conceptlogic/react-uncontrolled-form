@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 import { produce } from 'immer'
-import { every as _every, isNil as _isNil } from 'lodash'
+import { every as _every, isNil as _isNil, isEmpty as _isEmpty } from 'lodash'
 
 import { validateField as validate } from './../components/form/validators'
 import useValidatorLookup from './use-validator-lookup'
@@ -249,6 +249,22 @@ const useForm = formId => {
 
       return { isValid: false }
     }
+  }
+
+  // set initial state
+  if (_isEmpty(formState)) {
+    setTimeout(() => {
+      const formEl = document.getElementById(formId)
+
+      if (formEl) {
+        dispatch({
+          type: actions.UPDATE_FIELDS,
+          payload: {
+            fields: getFields(formId),
+          },
+        })
+      }
+    }, 0) // delay for the form to render
   }
 
   return {

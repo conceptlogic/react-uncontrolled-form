@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import BasicFormPage from './../../pages/basic-form-page'
 import TwoFormsPage from './../../pages/two-forms-page'
 import PairedValidationPage from './../../pages/paired-validation-page'
+import DependentFieldsPage from './../../pages/dependent-fields-page'
 import Nav from './../nav/nav'
 
 const App = () => {
@@ -19,6 +20,10 @@ const App = () => {
 
           <Route path="/paired-validation">
             <PairedValidationPage />
+          </Route>
+
+          <Route path="/dependent-fields">
+            <DependentFieldsPage />
           </Route>
 
           <Route path="/">
