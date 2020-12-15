@@ -1,22 +1,32 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import FormPage from './../../pages/form-page'
+import BasicFormPage from './../../pages/basic-form-page'
 import TwoFormsPage from './../../pages/two-forms-page'
+import PairedValidationPage from './../../pages/paired-validation-page'
+import Nav from './../nav/nav'
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/two-forms">
-          <TwoFormsPage />
-        </Route>
+    <>
+      <Router>
+        <Nav />
 
-        <Route path="/">
-          <FormPage />
-        </Route>
-      </Switch>
-    </Router>
+        <Switch>
+          <Route path="/two-forms">
+            <TwoFormsPage />
+          </Route>
+
+          <Route path="/paired-validation">
+            <PairedValidationPage />
+          </Route>
+
+          <Route path="/">
+            <BasicFormPage />
+          </Route>
+        </Switch>
+      </Router>
+    </>
   )
 }
 export default App
