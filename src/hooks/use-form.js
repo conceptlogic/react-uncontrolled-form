@@ -22,9 +22,20 @@ const getJson = fields => {
 const getFields = formId => {
   const elements = [...document.getElementById(formId).elements]
 
-  return elements.filter(({ disabled, name }) => {
-    return !disabled && name
-  })
+  return elements
+    .filter(({ disabled, name }) => {
+      return !disabled && name
+    })
+    .map(({ name, value, id }) => {
+      if (name) {
+        return {
+          name,
+          id,
+          value: value === 'placeholder' ? '' : value, // ignore <select> placeholder
+          errorMsg: null,
+        }
+      }
+    })
 }
 
 const actions = {
