@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import generateId from './../../uuid'
 import useForm from './../../hooks/use-form'
@@ -7,14 +7,15 @@ import Form from './../../components/form/form'
 import { validateRequired, validateEmail, validateMinLength } from './../../components/form/validators'
 
 const LoginForm = () => {
+  const [success, setSuccess] = useState()
   const formId = generateId()
-
   const { formState, submitForm, setFormState, resetError } = useForm(formId)
 
   const onSubmitForm = () => {
     const { data, isValid } = submitForm()
     if (isValid) {
       console.log(`form data`, data)
+      setSuccess(true)
     }
   }
 
@@ -40,6 +41,8 @@ const LoginForm = () => {
       />
 
       <button type="submit">Log In</button>
+
+      {success && <p style={{ color: 'green' }}>Success!</p>}
     </Form>
   )
 }
